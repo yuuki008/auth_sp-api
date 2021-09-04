@@ -141,22 +141,23 @@ const constructSignature = (region, action_type, string_to_sign, secret, iso_dat
 
 const req_params = {
   api_path: "/reports/2020-09-04/reports",
-  endpoint: "reports",
   method: "GET",
-  operation: "getReports",
   query: {reportTypes: ["GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE"]},
-  restore_rate: 45,
 }
 
 const main = async () => {
+  // 1.access_token取得
   const auth_token = await getAccessToken()
+  // 2.STS security token service
   const credentials = await createTemporaryAWSCredentials()
   const role_credentials = {
     id: credentials.AccessKeyId,
     secret: credentials.SecretAccessKey,
     security_token: credentials.SessionToken
   }
+  // 3.AWS signature(著名)
   let auth = await getAuthorizationHeader(auth_token.access_token, role_credentials, req_params);
+  // 4.APIを叩く
   const response = await fetch(auth.url, {
     method: auth.method,
     headers: auth.headers
