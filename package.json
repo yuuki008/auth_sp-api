@@ -1,0 +1,19 @@
+{
+  "name": "sp-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amazon-sp-api": "^0.5.4",
+    "aws-sdk": "^2.983.0",
+    "dotenv": "^10.0.0",
+    "fs-extra": "^10.0.0",
+    "isomorphic-unfetch": "^3.1.0",
+    "os": "^0.1.2"
+  }
+}
