@@ -139,12 +139,7 @@ const constructSignature = (region, action_type, string_to_sign, secret, iso_dat
   return crypto.HmacSHA256(string_to_sign, signature).toString(crypto.enc.Hex);
 }
 
-const req_params = {
-  api_path: "/reports/2020-09-04/reports",
-  method: "GET",
-  query: {reportTypes: ["GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE"]},
-}
-
+// 実行箇所
 const main = async () => {
   // 1.access_token取得
   const auth_token = await getAccessToken()
@@ -156,7 +151,7 @@ const main = async () => {
     security_token: credentials.SessionToken
   }
   // 3.AWS signature(著名)
-  let auth = await getAuthorizationHeader(auth_token.access_token, role_credentials, req_params);
+  let auth = await getAuthorizationHeader(auth_token.access_token, role_credentials, orders_req_params);
   // 4.APIを叩く
   const response = await fetch(auth.url, {
     method: auth.method,
@@ -166,3 +161,56 @@ const main = async () => {
 }
 
 main()
+
+// APIエンドポイント(get only)
+const pricing_req_params = {
+  api_path: "/products/pricing/v0/price",
+  method: "GET",
+  query: {
+    MarketplaceId: "A1VC38T7YXB528",
+    Asins: ['YOUR_ASINS'],
+    ItemType: "Asin",
+  },
+}
+
+const orders_req_params = {
+  api_path: "/orders/v0/orders",
+  method: "GET",
+  query: {
+    MarketplaceIds: ["A1VC38T7YXB528"],
+    CreatedAfter: "2021-07-01",
+  },
+}
+
+const order_items_req_params = {
+  api_path: "/orders/v0/orders/YOUR_AMAZON_ORDER_ID/orderItems",
+  method: "GET",
+  query: {
+  },
+}
+
+const catalog_items_req_params = {
+  api_path: "/catalog/v0/items/YOUR_ASIN",
+  method: "GET",
+  query: {
+    MarketplaceId: "A1VC38T7YXB528",
+  },
+}
+
+const list_catalog_items_req_params = {
+  api_path: "/catalog/v0/items",
+  method: "GET",
+  query: {
+    MarketplaceId: "A1VC38T7YXB528",
+    SellerSKU: "YOUR_SELLER_SKU"
+  },
+}
+
+const list_catalog_categories = {
+  api_path: "/catalog/v0/categories",
+  method: "GET",
+  query: {
+    MarketplaceId: "A1VC38T7YXB528",
+    ASIN: "YOUR_ASIN"
+  },
+}
